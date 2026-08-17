@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberTot - AI Child Safety & Parental Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0b0f19;
+            --card-bg: #131b2e;
+            --card-border: #1f2d4d;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --safe-color: #10b981;
+            --safe-bg: rgba(16, 185, 129, 0.12);
+            --caution-color: #f59e0b;
+            --caution-bg: rgba(245, 158, 11, 0.12);
+            --danger-color: #ef4444;
+            --danger-bg: rgba(239, 68, 68, 0.15);
+            --accent-blue: #3b82f6;
+            --accent-blue-bg: rgba(59, 130, 246, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--card-border);
+            margin-bottom: 28px;
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .brand-title h1 {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-title p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .status-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .status-pill.SAFE {
+            background: var(--safe-bg);
+            color: var(--safe-color);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-pill.CAUTION {
+            background: var(--caution-bg);
+            color: var(--caution-color);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .status-pill.DANGER {
+            background: var(--danger-bg);
+            color: var(--danger-color);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            animation: pulse-border 2s infinite;
+        }
+
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: currentColor;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .card-header h2 {
+            font-size: 17px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .safety-alert-box {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .safety-alert-box.SAFE { border-left: 4px solid var(--safe-color); }
+        .safety-alert-box.CAUTION { border-left: 4px solid var(--caution-color); }
+        .safety-alert-box.DANGER { border-left: 4px solid var(--danger-color); }
+
+        .alert-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .alert-body {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .stat-pills {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .stat-item {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--accent-blue);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .briefing-content {
+            font-size: 14px;
+            color: #cbd5e1;
+            line-height: 1.7;
+            white-space: pre-line;
+        }
+
+        .scenario-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .btn-scenario {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-scenario:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent-blue);
+        }
+
+        .btn-scenario.active {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .test-input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .test-input {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .btn-test {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .test-result-card {
+            margin-top: 14px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 14px;
+            display: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        th {
+            padding: 12px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--card-border);
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+
+        .badge.grooming { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .badge.cyberbullying { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .badge.scam_phishing { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
+        .badge.distress_selfharm { background: rgba(236, 72, 153, 0.2); color: #f472b6; }
+        .badge.safe { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="brand-section">
+            <div class="brand-icon">🛡️</div>
+            <div class="brand-title">
+                <h1>CyberTot Intelligence</h1>
+                <p>Child Device: <strong>Aarav (Age 12)</strong> &bull; Local ML Security Engine Active</p>
+            </div>
+        </div>
+        <div id="statusPill" class="status-pill SAFE">
+            <div class="pulse-dot"></div>
+            <span id="statusText">CHECKING...</span>
+        </div>
+    </header>
+
+    <div class="card" style="margin-bottom: 24px;">
+        <div class="card-header">
+            <h2>⚙️ Stream Scenario Simulator (50M Event Local Pipeline)</h2>
+            <span style="font-size: 12px; color: var(--text-muted);">Select preset activity stream to test engine</span>
+        </div>
+        <div class="scenario-selector">
+            <button class="btn-scenario" onclick="loadScenario('safe_day')">🟢 Safe Normal Day</button>
+            <button class="btn-scenario active" onclick="loadScenario('grooming_attempt')">🔴 Grooming Attempt (Late Night)</button>
+            <button class="btn-scenario" onclick="loadScenario('cyberbullying')">🟡 Gaming Cyberbullying</button>
+            <button class="btn-scenario" onclick="loadScenario('scam_trap')">🟣 Free Robux Scam Trap</button>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="card">
+            <div class="card-header">
+                <h2>❓ Is My Child Safe Right Now?</h2>
+                <span id="maxRiskScoreTag" style="font-size: 13px; font-weight: 700; color: var(--danger-color);">Risk Score: 0/100</span>
+            </div>
+
+            <div id="safetyAlertBox" class="safety-alert-box SAFE">
+                <div id="alertTitle" class="alert-title">Loading safety evaluation...</div>
+                <div id="alertBody" class="alert-body">Analyzing real-time stream metadata and local model probabilities.</div>
+            </div>
+
+            <div class="stat-pills">
+                <div class="stat-item">
+                    <div id="statEventsTotal" class="stat-value">0</div>
+                    <div class="stat-label">Events Analyzed</div>
+                </div>
+                <div class="stat-item">
+                    <div id="statFlaggedCount" class="stat-value" style="color: var(--caution-color);">0</div>
+                    <div class="stat-label">Risk Flags</div>
+                </div>
+                <div class="stat-item">
+                    <div id="statLatency" class="stat-value" style="color: var(--safe-color);">< 1ms</div>
+                    <div class="stat-label">Model Latency</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>📊 What Happened Today? (AI Parent Briefing)</h2>
+                <span style="font-size: 12px; color: var(--accent-blue);">Selective LLM Summary</span>
+            </div>
+            <div id="briefingContent" class="briefing-content">
+                Loading parent report...
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 28px;">
+        <div class="card-header">
+            <h2>🧪 Live Text Security Classifier (Hinglish / English)</h2>
+            <span style="font-size: 12px; color: var(--text-muted);">Asymmetric F2 Tuned Model Execution</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted);">Type any raw message or YouTube title to see how the trained local model evaluates danger in real-time:</p>
+
+        <div class="test-input-group">
+            <input type="text" id="testTextInput" class="test-input" placeholder="e.g. tu kitna noob hai, or how old r u? dont tell mom we talk..." value="how old r u? u seem mature. dont tell ur mom we talk">
+            <button class="btn-test" onclick="testClassifierText()">Run Model Test</button>
+        </div>
+
+        <div id="testResultCard" class="test-result-card">
+            <div id="testResultBody">Results will appear here...</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>🚩 Flagged Events & Risk Context Log</h2>
+            <span id="flaggedTableCount" style="font-size: 13px; color: var(--text-muted);">0 events</span>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Type / App</th>
+                        <th>Content / Details</th>
+                        <th>Counterparty</th>
+                        <th>Category</th>
+                        <th>Risk Score</th>
+                    </tr>
+                </thead>
+                <tbody id="flaggedTableBody">
+                    <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No flagged risk events in current stream</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentScenario = 'grooming_attempt';
+
+    async function fetchAnalysis() {
+        try {
+            const res = await fetch('/api/analysis');
+            const data = await res.json();
+            renderDashboard(data);
+        } catch (err) {
+            console.error('Error fetching analysis:', err);
+        }
+    }
+
+    async function loadScenario(scenarioName) {
+        currentScenario = scenarioName;
+        document.querySelectorAll('.btn-scenario').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        try {
+            const res = await fetch('/api/simulate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ scenario: scenarioName })
+            });
+            const data = await res.json();
+            renderDashboard(data);
+        } catch (err) {
+            console.error('Error simulating scenario:', err);
+        }
+    }
+
+    function renderDashboard(data) {
+        const realtime = data.realtime_status;
+        const summary = data.today_summary;
+        const briefing = data.parent_briefing;
+
+        const statusPill = document.getElementById('statusPill');
+        const statusText = document.getElementById('statusText');
+        statusPill.className = `status-pill ${realtime.status}`;
+        statusText.innerText = realtime.status;
+
+        const alertBox = document.getElementById('safetyAlertBox');
+        alertBox.className = `safety-alert-box ${realtime.status}`;
+        document.getElementById('alertTitle').innerText = realtime.headline;
+        document.getElementById('maxRiskScoreTag').innerText = `Max Risk Score: ${realtime.max_risk_score}/100`;
+
+        if (realtime.top_risk_event) {
+            document.getElementById('alertBody').innerHTML = `
+                Top Trigger: <strong>${realtime.top_risk_event.classified_category.toUpperCase()}</strong> 
+                in <em>${realtime.top_risk_event.app || realtime.top_risk_event.domain || 'Session'}</em><br>
+                Content: "${realtime.top_risk_event.text || realtime.top_risk_event.title || 'App Session'}"
+            `;
+        } else {
+            document.getElementById('alertBody').innerText = "No high-risk activity detected in today's stream.";
+        }
+
+        document.getElementById('statEventsTotal').innerText = summary.total_events_processed;
+        document.getElementById('statFlaggedCount').innerText = summary.flagged_events_count;
+        document.getElementById('briefingContent').innerText = briefing;
+
+        const tableBody = document.getElementById('flaggedTableBody');
+        document.getElementById('flaggedTableCount').innerText = `${summary.flagged_events_list.length} flagged events`;
+
+        if (summary.flagged_events_list.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 20px;">✅ Zero safety flags detected. Child is completely safe today.</td></tr>`;
+        } else {
+            tableBody.innerHTML = summary.flagged_events_list.map(ev => {
+                const timeStr = ev.ts ? ev.ts.split('T')[1].substring(0, 5) : '--:--';
+                const appStr = ev.app ? ev.app.split('.').pop() : (ev.domain || 'app');
+                const textStr = ev.text || ev.title || `Session (${Math.round((ev.duration_s || 0)/60)} mins)`;
+                const cpartyStr = ev.counterparty || (ev.context_flags && ev.context_flags.is_unknown_sender ? 'Unknown' : 'N/A');
+                
+                return `
+                    <tr>
+                        <td><strong>${timeStr}</strong></td>
+                        <td>${appStr}</td>
+                        <td>${textStr}</td>
+                        <td><span style="color: ${cpartyStr.includes('unknown') ? '#f87171' : '#94a3b8'}">${cpartyStr}</span></td>
+                        <td><span class="badge ${ev.classified_category}">${ev.classified_category}</span></td>
+                        <td><strong style="color: #ef4444;">${ev.risk_score}</strong></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+    }
+
+    async function testClassifierText() {
+        const text = document.getElementById('testTextInput').value;
+        if (!text.trim()) return;
+
+        const resultCard = document.getElementById('testResultCard');
+        const resultBody = document.getElementById('testResultBody');
+        resultCard.style.display = 'block';
+        resultBody.innerText = "Evaluating model prediction...";
+
+        try {
+            const res = await fetch('/api/classify_text', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: text })
+            });
+            const data = await res.json();
+            resultBody.innerHTML = `
+                <div><strong>Input:</strong> "${data.text}"</div>
+                <div><strong>Category Predicted:</strong> <span class="badge ${data.classified_category}">${data.classified_category.toUpperCase()}</span></div>
+                <div><strong>Classifier Confidence:</strong> ${data.confidence * 100}%</div>
+                <div><strong>Contextual Risk Score:</strong> ${data.risk_score} / 100</div>
+                <div><strong>Flags:</strong> Late-Night=${data.context_flags.is_late_night}, Unknown-Sender=${data.context_flags.is_unknown_sender}</div>
+            `;
+        } catch (err) {
+            resultBody.innerText = "Error running model test";
+        }
+    }
+
+    fetchAnalysis();
+</script>
+
+</body>
+</html>
