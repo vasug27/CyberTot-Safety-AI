@@ -1,0 +1,56 @@
+[
+  {
+    "ts": "2026-08-11T14:30:00+05:30",
+    "type": "app_session",
+    "app": "com.whatsapp",
+    "duration_s": 300
+  },
+  {
+    "ts": "2026-08-11T14:32:00+05:30",
+    "type": "chat_message",
+    "app": "com.whatsapp",
+    "direction": "received",
+    "text": "bhai aaj bus 10 min late aayegi",
+    "counterparty": "classmate_arav"
+  },
+  {
+    "ts": "2026-08-11T16:15:00+05:30",
+    "type": "app_session",
+    "app": "com.google.android.youtube",
+    "duration_s": 2400
+  },
+  {
+    "ts": "2026-08-11T16:20:00+05:30",
+    "type": "web_visit",
+    "domain": "youtube.com",
+    "title": "Minecraft survival guide for beginners in Hindi"
+  },
+  {
+    "ts": "2026-08-11T18:10:00+05:30",
+    "type": "app_session",
+    "app": "com.roblox.client",
+    "duration_s": 4820
+  },
+  {
+    "ts": "2026-08-11T19:20:00+05:30",
+    "type": "web_visit",
+    "domain": "freerobuxgenerator.xyz",
+    "title": "FREE ROBUX - just enter your parents card"
+  },
+  {
+    "ts": "2026-08-11T21:47:00+05:30",
+    "type": "chat_message",
+    "app": "com.roblox.client",
+    "direction": "received",
+    "text": "how old r u? u seem mature, send photo privately dont tell mom",
+    "counterparty": "unknown_user_8812"
+  },
+  {
+    "ts": "2026-08-11T22:58:00+05:30",
+    "type": "chat_message",
+    "app": "com.whatsapp",
+    "direction": "sent",
+    "text": "kuch accha nahi lag raha photo, har waqt rona aata hai",
+    "counterparty": "best_friend"
+  }
+]
